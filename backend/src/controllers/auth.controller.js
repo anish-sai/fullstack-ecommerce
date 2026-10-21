@@ -29,7 +29,7 @@ async function sendTokenResponse(user, res, message) {
 
 
 export const register = async (req, res) => {
-    const { email, contact, password, fullname } = req.body;
+    const { email, contact, password, fullname, isSeller } = req.body;
 
     try {
         const existingUser = await userModel.findOne({
@@ -49,7 +49,8 @@ export const register = async (req, res) => {
             email,
             contact,
             password,
-            fullname
+            fullname,
+            role: isSeller ? "seller" : "buyer"  // true = seller, false = buyer
         })
 
         await sendTokenResponse(user, res, "User registered successfully")
@@ -61,4 +62,22 @@ export const register = async (req, res) => {
             message: "Internal Server Error"
         })
     }
+}
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) {
+        return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    await sendTokenResponse(user, res, "User logged in successfully")
 }
