@@ -272,6 +272,8 @@ const Register = () => {
                                 </span>
                             </label>
 
+                            <a href="/api/auth/google">Continue with Google</a>
+
                             {error && <p className="text-xs text-red-700" role="alert">{error}</p>}
                             {success && <p className="text-xs text-green-700" role="status">{success}</p>}
 
