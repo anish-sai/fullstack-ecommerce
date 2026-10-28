@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "../hook/useAuth";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import ContinueWithGoogle from '../components/ContinueWithGoogle';
 
 const Login = () => {
@@ -11,6 +11,7 @@ const Login = () => {
         email: '',
         password: ''
     });
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,15 +20,20 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
         try {
             const user = await handleLogin({ email: formData.email, password: formData.password });
             if (user.role == "buyer") {
                 navigate("/");
             } else if (user.role == "seller") {
-                navigate("/");
+                navigate("/seller/dashboard");
             }
         } catch (error) {
             console.error("Login failed", error);
+            setErrorMessage(
+                error.response?.data?.message ||
+                "Login failed. Please check your email and password."
+            );
         }
     };
 
@@ -115,6 +121,11 @@ const Login = () => {
 
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+                            {errorMessage && (
+                                <p className="text-sm text-red-700" role="alert">
+                                    {errorMessage}
+                                </p>
+                            )}
 
                             {/* Email */}
                             <div className="flex flex-col gap-2">

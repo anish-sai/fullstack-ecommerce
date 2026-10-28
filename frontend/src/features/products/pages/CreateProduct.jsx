@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP'];

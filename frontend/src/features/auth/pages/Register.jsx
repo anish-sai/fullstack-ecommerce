@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "../hook/useAuth";
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import ContinueWithGoogle from '../components/ContinueWithGoogle';
 
 const Register = () => {
